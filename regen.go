@@ -10,13 +10,13 @@ import (
 )
 
 // Generate return a regexp for extract field from raw
-func Generate(raw, field string) (pattern string, err error) {
+func Generate(raw, expected string) (expr string, err error) {
 	// TODO  multi occurs
-	from := strings.Index(raw, field)
+	from := strings.Index(raw, expected)
 	if from < 0 {
-		return "", fmt.Errorf(`"%s" not found in "%s"`, field, raw)
+		return "", fmt.Errorf(`"%s" not found in "%s"`, expected, raw)
 	}
-	to := from + len(field)
+	to := from + len(expected)
 
 	prefix := raw[:from]
 	body := raw[from:to]
@@ -33,8 +33,8 @@ func Generate(raw, field string) (pattern string, err error) {
 }
 
 // GenerateAndVerify generate a regexp and then verify does it match field correctly
-func GenerateAndVerify(raw, field string) (string, error) {
-	pattern, err := Generate(raw, field)
+func GenerateAndVerify(raw, expected string) (string, error) {
+	pattern, err := Generate(raw, expected)
 	if err != nil {
 		return "", err
 	}
@@ -45,7 +45,7 @@ func GenerateAndVerify(raw, field string) (string, error) {
 	}
 
 	matches := re.FindStringSubmatch(raw)
-	if len(matches) < 2 || matches[1] != field {
+	if len(matches) < 2 || matches[1] != expected {
 		return pattern, fmt.Errorf("the pattern does not match the field")
 	}
 	return pattern, nil
