@@ -1,3 +1,5 @@
+**regen does not open source yet, you can using [patnc](https://github.com/abo/patnc) alternatively**
+
 regen
 =====
 A regexp generator of field for log analytics
@@ -22,7 +24,7 @@ Thu May 15 2015 00:15:05 mailsv1 sshd[3006]: Failed password for invalid user in
 Thu May 15 2015 00:15:05 mailsv1 sshd[5298]: Failed password for invalid user postgres from 86.212.199.60 port 1265 ssh2`
     lines := strings.Split(mailsv, "\n")
     
-    pattern, _ := Generate(lines[0], "2716")
+    pattern, _ := regen.Generate(lines[0], "2716")
     re := regexp.MustCompile(pattern)
     
     pids := make([]string, len(lines))
